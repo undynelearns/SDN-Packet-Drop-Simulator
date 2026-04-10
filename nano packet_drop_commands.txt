@@ -1,0 +1,22 @@
+
+
+# Start Mininet
+sudo mn --topo single,3 --controller=remote
+
+# Test connectivity
+pingall
+
+# Apply drop rule
+sh ovs-ofctl add-flow s1 priority=100,ip,nw_src=10.0.0.1,nw_dst=10.0.0.2,actions=drop
+
+# Test blocked traffic
+h1 ping h2
+
+# Test allowed traffic
+h1 ping h3
+
+# View flows
+sh ovs-ofctl dump-flows s1
+
+# Cleanup
+sudo mn -c
